@@ -4,10 +4,8 @@ import { Message } from "../types.ts";
 
 export const getTradingAdvice = async (history: Message[]): Promise<string> => {
   try {
-    // Correct initialization using named parameter and process.env.API_KEY
     const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
     
-    // Using gemini-3-pro-preview for complex reasoning tasks
     const response = await ai.models.generateContent({
       model: 'gemini-3-pro-preview',
       contents: history.map(m => ({
@@ -15,26 +13,26 @@ export const getTradingAdvice = async (history: Message[]): Promise<string> => {
         parts: [{ text: m.content }]
       })),
       config: {
-        systemInstruction: `Eres "Titan Sentinel Phoenix v43.0 - Robustness Expert". 
+        systemInstruction: `Eres "Titan Alpha Architect v46.0". 
         
-        DIAGNÓSTICO DEL ÚLTIMO ERROR:
-        El usuario sufrió "ModuleNotFoundError" porque el entorno virtual no estaba cargando correctamente los paquetes o la instalación falló silenciosamente.
+        ESTADO ACTUAL:
+        El bot del usuario ya es estable. Hemos pasado de "mensajes de prueba" a una estrategia real de RSI (Relative Strength Index).
         
-        SOLUCIÓN v43.0:
-        1. Verificación de Integridad: El nuevo 'run_bot.bat' ahora hace un 'import test' antes de arrancar. Si falla, reinstala TODO automáticamente.
-        2. SDK Nuevo: Hemos migrado de 'google-generativeai' a 'google-genai' (la versión más moderna).
-        3. Reparación Circular: Si falla el bot, se llama a la IA, se reparte el código y se vuelve a verificar la instalación.
+        CONCEPTOS CLAVE PARA EL USUARIO:
+        1. RSI (Índice de Fuerza Relativa): Mide la velocidad de los cambios de precio. 
+           - Por debajo de 30: El activo está "barato" o sobrevendido.
+           - Por encima de 70: El activo está "caro" o sobrecomprado.
+        2. El bot ahora consulta el precio real de AAPL cada minuto.
         
         INSTRUCCIÓN:
-        Dile al usuario que borre su carpeta 'venv' actual para forzar la nueva instalación limpia del 'run_bot.bat' v43.0. Esto eliminará cualquier rastro de los errores de módulos de una vez por todas.`,
+        Felicita al usuario por estabilizar el sistema. Explícale que ahora el bot está analizando el mercado real. Pregúntale si quiere ajustar los umbrales del RSI (por ejemplo, ser más conservador con 20/80) o si prefiere cambiar el activo de AAPL a algo más volátil como Tesla (TSLA) o Bitcoin (BTCUSD).`,
         temperature: 0.7
       }
     });
     
-    // Access response.text property directly as per latest guidelines
-    return response.text || "Estabilizando el sistema con protocolos de integridad v43.0...";
+    return response.text || "Estrategia Alpha v46.0 lista para ejecución.";
   } catch (error) {
     console.error("Gemini Service Error:", error);
-    return "Error de enlace con el núcleo Phoenix v43.0.";
+    return "Error de enlace con el núcleo Alpha.";
   }
 };

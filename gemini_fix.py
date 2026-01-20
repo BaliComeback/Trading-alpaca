@@ -2,7 +2,7 @@ import google.generativeai as genai
 import os
 
 # REEMPLAZA ESTO CON TU LLAVE DE GOOGLE AI STUDIO
-API_KEY = "AIzaSyAyBLacc1t7JKZ5oVomVBPjnvps4xxjKtg"
+API_KEY = "AIzaSyATjFX9ql3TTUolL2EWFx0uco1n2ojIPdc"
 
 genai.configure(api_key=API_KEY)
 model = genai.GenerativeModel('gemini-1.5-flash')
