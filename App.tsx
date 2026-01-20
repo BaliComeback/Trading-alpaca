@@ -5,15 +5,14 @@ import { AppTab, AlpacaConfig } from './types.ts';
 import { TUTORIAL_STEPS } from './constants.tsx';
 import MentorChat from './components/MentorChat.tsx';
 
-// Define the AIStudio interface as required by the global scope to fix type mismatch.
-interface AIStudio {
-  hasSelectedApiKey(): Promise<boolean>;
-  openSelectKey(): Promise<void>;
-}
-
+// Define the global window interface extension to include aistudio.
+// Using an inline type for aistudio avoids naming collisions with existing 'AIStudio' interfaces in the global namespace.
 declare global {
   interface Window {
-    aistudio?: AIStudio;
+    aistudio: {
+      hasSelectedApiKey(): Promise<boolean>;
+      openSelectKey(): Promise<void>;
+    };
   }
 }
 
