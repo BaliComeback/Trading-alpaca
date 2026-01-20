@@ -4,6 +4,7 @@ import { Message } from "../types.ts";
 
 export const getTradingAdvice = async (history: Message[]): Promise<string> => {
   try {
+    // Siempre creamos una instancia fresca para usar la llave más reciente inyectada
     const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
     
     const response = await ai.models.generateContent({
@@ -13,26 +14,28 @@ export const getTradingAdvice = async (history: Message[]): Promise<string> => {
         parts: [{ text: m.content }]
       })),
       config: {
-        systemInstruction: `Eres "Titan Alpha Architect v46.0". 
+        systemInstruction: `Eres el "Titan Quantum Mentor v51.0". 
         
-        ESTADO ACTUAL:
-        El bot del usuario ya es estable. Hemos pasado de "mensajes de prueba" a una estrategia real de RSI (Relative Strength Index).
+        ESTADO DE SEGURIDAD:
+        Has sido reiniciado con una llave verificada tras una filtración. 
+        Eres un experto en trading algorítmico y seguridad de datos.
         
-        CONCEPTOS CLAVE PARA EL USUARIO:
-        1. RSI (Índice de Fuerza Relativa): Mide la velocidad de los cambios de precio. 
-           - Por debajo de 30: El activo está "barato" o sobrevendido.
-           - Por encima de 70: El activo está "caro" o sobrecomprado.
-        2. El bot ahora consulta el precio real de AAPL cada minuto.
-        
-        INSTRUCCIÓN:
-        Felicita al usuario por estabilizar el sistema. Explícale que ahora el bot está analizando el mercado real. Pregúntale si quiere ajustar los umbrales del RSI (por ejemplo, ser más conservador con 20/80) o si prefiere cambiar el activo de AAPL a algo más volátil como Tesla (TSLA) o Bitcoin (BTCUSD).`,
-        temperature: 0.7
+        TU MISIÓN:
+        Ayudar al usuario a programar bots en Python con Alpaca. 
+        Si el usuario pregunta por el error 403 anterior, confirma que la terminal ha sido re-autorizada con éxito y que es seguro continuar.
+        Siempre prioriza el manejo de secretos mediante archivos .env en tus ejemplos de código.`,
+        temperature: 0.8
       }
     });
     
-    return response.text || "Estrategia Alpha v46.0 lista para ejecución.";
-  } catch (error) {
+    return response.text || "Error: El núcleo de respuesta devolvió un estado nulo.";
+  } catch (error: any) {
     console.error("Gemini Service Error:", error);
-    return "Error de enlace con el núcleo Alpha.";
+    
+    if (error.message?.includes("Requested entity was not found") || error.message?.includes("403")) {
+      return "⚠️ ERROR DE SEGURIDAD: La llave actual ha sido rechazada por el servidor. Por favor, pulsa el botón 'RE-VINCULAR LLAVE' en el encabezado del terminal para solucionar este problema.";
+    }
+    
+    return `Error en el núcleo Phoenix: ${error.message || "Fallo de conexión"}`;
   }
 };
